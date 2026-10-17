@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>You've been invited to Saffron Street</title>
+<meta name="description" content="Join me on Saffron Street: cook, serve and restore the street. Open the link for your invite code.">
+<meta name="theme-color" content="#E4572E">
+<meta property="og:type" content="website"><meta property="og:site_name" content="Saffron Street"><meta property="og:title" content="You've been invited to Saffron Street"><meta property="og:description" content="Join me on Saffron Street: cook, serve and restore the street. Open the link for your invite code."><meta property="og:image" content="https://tontechco.github.io/saffronstreet-site/assets/og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:url" content="https://tontechco.github.io/saffronstreet-site/"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="You've been invited to Saffron Street"><meta name="twitter:description" content="Join me on Saffron Street: cook, serve and restore the street. Open the link for your invite code."><meta name="twitter:image" content="https://tontechco.github.io/saffronstreet-site/assets/og.png">
+<link rel="icon" href="https://tontechco.github.io/saffronstreet-site/assets/icon-512.png">
+<link rel="apple-touch-icon" href="https://tontechco.github.io/saffronstreet-site/assets/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito+Sans:wght@400;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://tontechco.github.io/saffronstreet-site/assets/site.css">
+</head>
+<body>
+<div class="stripe"></div>
+<div class="wrap">
+<header class="site"><img src="https://tontechco.github.io/saffronstreet-site/assets/icon-512.png" alt=""><a href="https://tontechco.github.io/saffronstreet-site/">Saffron Street</a></header>
+<div class="card">
+<h1 id="h">You've been invited to Saffron Street</h1>
+<p id="lead">A friend wants you on their street. Cook, serve and restore it together.</p>
+<div id="ok" hidden>
+<div class="code" id="code" aria-label="Invite code"></div>
+<div><button class="btn alt" id="copy" type="button">Copy code</button></div>
+<p id="copied" class="soon" role="status" aria-live="polite" style="min-height:1.5em"></p>
+<div class="ctas"><a class="btn primary" href="https://apps.apple.com/app/id6823965322">Download on the App Store</a></div>
+<ol class="steps"><li>Install and open the game.</li><li>Open <strong>Settings &rarr; Friends &rarr; I was invited</strong>.</li><li>Enter this code (within 7 days of installing).</li></ol>
+<p class="soon" style="margin-top:14px">Already installed? <a id="open" href="#">Open the game</a>. Google Play: coming soon.</p>
+</div>
+<div id="bad" hidden>
+<p class="err" id="errmsg">That invite code doesn't look right. Codes have 8 characters: the digits 0-9 and letters A-Z, without I, L, O and U. Check the link with your friend.</p>
+<div class="ctas"><a class="btn primary" href="https://apps.apple.com/app/id6823965322">Download on the App Store</a><a class="btn ghost" href="https://tontechco.github.io/saffronstreet-site/">About the game</a></div>
+</div>
+</div>
+<script>
+(function(){
+  var ALPHA='0123456789ABCDEFGHJKMNPQRSTVWXYZ';
+  var m=/\/i\/([^\/?#]*)/.exec(location.pathname);
+  var bad=document.getElementById('bad');
+  if(!m){
+    document.getElementById('h').textContent='Page not found';
+    document.getElementById('lead').textContent='This page does not exist.';
+    document.getElementById('errmsg').textContent='Nothing here. Did you mean to open an invite link?';
+    bad.hidden=false; return;
+  }
+  var raw='';
+  try{raw=decodeURIComponent(m[1]);}catch(e){raw='';}
+  var s=raw.toUpperCase().replace(/[\s\-]/g,'').replace(/O/g,'0').replace(/[IL]/g,'1');
+  var valid=s.length===8;
+  for(var i=0;valid&&i<s.length;i++) if(ALPHA.indexOf(s.charAt(i))<0) valid=false;
+  if(!valid){ bad.hidden=false; return; }
+  var shown=s.substr(0,4)+'-'+s.substr(4);
+  document.getElementById('code').textContent=shown;
+  document.title='Join me on Saffron Street ('+shown+')';
+  document.getElementById('open').href='saffronstreet://invite/'+s;
+  document.getElementById('ok').hidden=false;
+  var note=document.getElementById('copied');
+  document.getElementById('copy').addEventListener('click',function(){
+    var done=function(){note.textContent='Copied '+shown+'. Paste it in the game.';};
+    var fail=function(){note.textContent='Could not copy automatically. Select the code and copy it.';};
+    try{
+      if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(s).then(done,fail);}
+      else{
+        var t=document.createElement('textarea');t.value=s;t.style.position='fixed';t.style.opacity='0';document.body.appendChild(t);t.select();
+        var r=document.execCommand('copy');document.body.removeChild(t);r?done():fail();
+      }
+    }catch(e){fail();}
+  });
+})();
+</script>
+<footer><a href="https://tontechco.github.io/saffronstreet-site/privacy/">Privacy</a> &nbsp;·&nbsp; <a href="https://tontechco.github.io/saffronstreet-site/terms/">Terms</a> &nbsp;·&nbsp; <a href="https://tontechco.github.io/saffronstreet-site/support/">Support</a><br>© TonTech · info@tontech.co</footer>
+</div>
+</body>
+</html>
