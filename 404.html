@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>You've been invited to Saffron Street</title>
-<meta name="description" content="Join me on Saffron Street: cook, serve and restore the street. Open the link for your invite code.">
+<title>Saffron Street: a friend sent you a link</title>
+<meta name="description" content="Cook, serve and restore the street with friends. Open the link to join in.">
 <meta name="theme-color" content="#E4572E">
-<meta property="og:type" content="website"><meta property="og:site_name" content="Saffron Street"><meta property="og:title" content="You've been invited to Saffron Street"><meta property="og:description" content="Join me on Saffron Street: cook, serve and restore the street. Open the link for your invite code."><meta property="og:image" content="https://tontechco.github.io/saffronstreet-site/assets/og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:url" content="https://tontechco.github.io/saffronstreet-site/"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="You've been invited to Saffron Street"><meta name="twitter:description" content="Join me on Saffron Street: cook, serve and restore the street. Open the link for your invite code."><meta name="twitter:image" content="https://tontechco.github.io/saffronstreet-site/assets/og.png">
+<meta property="og:type" content="website"><meta property="og:site_name" content="Saffron Street"><meta property="og:title" content="Saffron Street: a friend sent you a link"><meta property="og:description" content="Cook, serve and restore the street with friends. Open the link to join in."><meta property="og:image" content="https://tontechco.github.io/saffronstreet-site/assets/og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:url" content="https://tontechco.github.io/saffronstreet-site/"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Saffron Street: a friend sent you a link"><meta name="twitter:description" content="Cook, serve and restore the street with friends. Open the link to join in."><meta name="twitter:image" content="https://tontechco.github.io/saffronstreet-site/assets/og.png">
 <link rel="icon" href="https://tontechco.github.io/saffronstreet-site/assets/icon-512.png">
 <link rel="apple-touch-icon" href="https://tontechco.github.io/saffronstreet-site/assets/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito+Sans:wght@400;700;800&display=swap" rel="stylesheet">
@@ -20,12 +20,13 @@
 <h1 id="h">You've been invited to Saffron Street</h1>
 <p id="lead">A friend wants you on their street. Cook, serve and restore it together.</p>
 <div id="ok" hidden>
-<div class="code" id="code" aria-label="Invite code"></div>
+<div class="code" id="code" aria-label="Code"></div>
 <div><button class="btn alt" id="copy" type="button">Copy code</button></div>
 <p id="copied" class="soon" role="status" aria-live="polite" style="min-height:1.5em"></p>
-<div class="ctas"><a class="btn primary" href="https://apps.apple.com/app/id6823965322">Download on the App Store</a></div>
-<ol class="steps"><li>Install and open the game.</li><li>Open <strong>Settings &rarr; Friends &rarr; I was invited</strong>.</li><li>Enter this code (within 7 days of installing).</li></ol>
-<p class="soon" style="margin-top:14px">Already installed? <a id="open" href="#">Open the game</a>. Google Play: coming soon.</p>
+<div class="ctas"><a class="btn primary" id="openc" href="#" hidden>Open the challenge</a><a class="btn primary" id="store" href="https://apps.apple.com/app/id6823965322">Download on the App Store</a></div>
+<ol class="steps" id="steps-invite"><li>Install and open the game.</li><li>Open <strong>Settings &rarr; Friends &rarr; I was invited</strong>.</li><li>Enter this code (within 7 days of installing).</li></ol>
+<ol class="steps" id="steps-challenge" hidden><li>Install and open the game, then play the short tutorial.</li><li>Come back to this page and tap <strong>Open the challenge</strong>, or open <strong>Settings &rarr; Challenges</strong> and enter this code.</li><li>Play the same 2-minute shift and try to beat the tips. Same customers, same rules, no boosts.</li></ol>
+<p class="soon" style="margin-top:14px"><span id="installed">Already installed? <a id="open" href="#">Open the game</a>. </span>Google Play: coming soon.</p>
 </div>
 <div id="bad" hidden>
 <p class="err" id="errmsg">That invite code doesn't look right. Codes have 8 characters: the digits 0-9 and letters A-Z, without I, L, O and U. Check the link with your friend.</p>
@@ -34,28 +35,46 @@
 </div>
 <script>
 (function(){
+  // Project Pages can't route, so GitHub serves this page for every unknown path: /i/CODE (invite) and /c/CODE (Recipe Challenge).
   var ALPHA='0123456789ABCDEFGHJKMNPQRSTVWXYZ';
-  var m=/\/i\/([^\/?#]*)/.exec(location.pathname);
+  var m=/\/(i|c)\/([^\/?#]*)/.exec(location.pathname);
   var bad=document.getElementById('bad');
+  var $=function(id){return document.getElementById(id);};
   if(!m){
-    document.getElementById('h').textContent='Page not found';
-    document.getElementById('lead').textContent='This page does not exist.';
-    document.getElementById('errmsg').textContent='Nothing here. Did you mean to open an invite link?';
+    $('h').textContent='Page not found';
+    $('lead').textContent='This page does not exist.';
+    $('errmsg').textContent='Nothing here. Did you mean to open an invite or a challenge link?';
     bad.hidden=false; return;
   }
+  var challenge=m[1]==='c';
+  if(challenge){
+    $('h').textContent='You\u2019ve been challenged!';
+    $('lead').textContent='A friend played a 2-minute Service Shift on Saffron Street and wants to see if you can serve more tips.';
+    $('errmsg').textContent='That challenge code doesn\u2019t look right. Codes have 8 characters: the digits 0-9 and letters A-Z, without I, L, O and U. Check the link with your friend.';
+  }
   var raw='';
-  try{raw=decodeURIComponent(m[1]);}catch(e){raw='';}
+  try{raw=decodeURIComponent(m[2]);}catch(e){raw='';}
   var s=raw.toUpperCase().replace(/[\s\-]/g,'').replace(/O/g,'0').replace(/[IL]/g,'1');
   var valid=s.length===8;
   for(var i=0;valid&&i<s.length;i++) if(ALPHA.indexOf(s.charAt(i))<0) valid=false;
   if(!valid){ bad.hidden=false; return; }
   var shown=s.substr(0,4)+'-'+s.substr(4);
-  document.getElementById('code').textContent=shown;
-  document.title='Join me on Saffron Street ('+shown+')';
-  document.getElementById('open').href='saffronstreet://invite/'+s;
-  document.getElementById('ok').hidden=false;
-  var note=document.getElementById('copied');
-  document.getElementById('copy').addEventListener('click',function(){
+  $('code').textContent=shown;
+  if(challenge){
+    document.title='Can you beat me on Saffron Street? ('+shown+')';
+    $('openc').href='saffronstreet://challenge/'+s;
+    $('openc').hidden=false;
+    $('store').className='btn alt';
+    $('steps-invite').hidden=true;
+    $('steps-challenge').hidden=false;
+    $('installed').hidden=true;
+  } else {
+    document.title='Join me on Saffron Street ('+shown+')';
+    $('open').href='saffronstreet://invite/'+s;
+  }
+  $('ok').hidden=false;
+  var note=$('copied');
+  $('copy').addEventListener('click',function(){
     var done=function(){note.textContent='Copied '+shown+'. Paste it in the game.';};
     var fail=function(){note.textContent='Could not copy automatically. Select the code and copy it.';};
     try{

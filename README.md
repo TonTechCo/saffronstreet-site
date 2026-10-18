@@ -7,6 +7,9 @@ https://tontechco.github.io/saffronstreet-site/
 - `/i/<CODE>`: invite page. Project Pages cannot route, so GitHub serves `404.html` for any unknown path;
   its script reads the code from the URL, validates it against the friend-code alphabet
   (`0123456789ABCDEFGHJKMNPQRSTVWXYZ`, 8 chars; O, I and L are folded like in the game) and shows it with a copy button.
+- `/c/<CODE>`: Recipe Challenge page (same `404.html` router, same alphabet). Shows the code, an "Open the challenge"
+  button (`saffronstreet://challenge/CODE`), the store link and the steps for a fresh install (play the tutorial, then
+  open the link again or enter the code in Settings → Challenges). The game builds these links from `CHALLENGE_BASE_URL`.
 - `assets/`: app icon, item sprites, `og.png` (1200x630 share image).
 
 The game builds invite links from `INVITE_BASE_URL` on the Nakama host (`https://tontechco.github.io/saffronstreet-site/i/`).
